@@ -330,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => petApp(), // Use your PetAdd widget
+                    builder: (context) => Pet_Add(title: 'Add Pet'), // Use your PetAdd widget
                   ),
                 );
               },

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet/components/global_singlton.dart';
+import 'package:pet/controller/model/users_model.dart';
 import 'package:pet/utils/repository/network_repository.dart';
 
 import '../components/colors.dart';
 import '../components/common_methos.dart';
 import '../pages/home_screen.dart';
 import '../pages/login_screen.dart';
+import 'model/user_repository.dart';
 
 class AuthController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -16,6 +18,7 @@ class AuthController extends GetxController {
   TextEditingController confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final userRepo = Get.put(UserRepository());
 
   Future clearForm() async {
     emailController.clear();
@@ -30,7 +33,25 @@ class AuthController extends GetxController {
         email: emailController.text.trim(),
         password: passwordController.text,
       );
+      if(userCredential.user != null) {
+        User user = userCredential.user!;
+        // Send email verification
+        await userCredential.user!
+            .sendEmailVerification()
+            .whenComplete(() async =>
 
+            saveUserDetails(userModel(id: user.uid.toString(),
+                email:user.email.toString().trim(), password: passwordController.text,
+                confirmpassword: confirmPasswordController.text)));
+
+        await CommonMethod().getXSnackBar(
+          "Success",
+          'Verification email sent to ${userCredential.user!.email}',
+          Colors.green,
+        )
+            .then((value) => Get.to(() => LoginScreen())
+      );
+    }
       // Send email verification
       await userCredential.user!
           .sendEmailVerification()
@@ -64,6 +85,10 @@ class AuthController extends GetxController {
       }
     }
   }
+  Future saveUserDetails(userModel user) async {
+    userRepo.createUser(user);
+    // controller.registerWithEmailAndPassword(context);
+    }
   // Sign in with email and password
   Future<String?> signInWithEmailAndPassword(BuildContext context) async {
     try {
@@ -181,7 +206,7 @@ class AuthController extends GetxController {
     //         "deviceToken": GlobalSingleton().deviceToken
     //       };
     //       print('id token -' + auth.idToken.toString());
-    //       print('access token -' + auth.accessToken.toString());
+    //       print('access token -' + auth.accssToken.toString());
 
     //       print(authUserData);
     //       final authResponse =
