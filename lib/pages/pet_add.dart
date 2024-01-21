@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet/pages/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pet/resource/add_data.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,10 +40,13 @@ class Pet_Add extends StatefulWidget {
 
 class _PetAddState extends State<Pet_Add> {
   Uint8List? _image;
+
+
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   String? selectedAge ;
-  List<String> ageList =['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','more'];
+  List<String> ageList =['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','more'];
 
   void selectImage() async{
     Uint8List img = await pickImage(ImageSource.gallery);
@@ -49,11 +54,28 @@ class _PetAddState extends State<Pet_Add> {
       _image = img;
     });
   }
-  void _handleAddButton() {
-    print('Name: ${nameController.text}');
-    print('Age: $selectedAge');
-    print('Price: ${priceController.text}');
+  Future  _handleAddButton() async {
+    String name = nameController.text;
+    // int age = int.parse(ageController.text);
+    // int price = int.parse(ageController.text);
+    String age = selectedAge ?? '';
+    String price = priceController.text;
+
+    String resp = await StoreData().saveData(name: name, age: age, price: price, file: _image!);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Successfully added!'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    // Delay the navigation to give time for the user to see the success message
+    Future.delayed(Duration(seconds: 1), () {
+      // Navigate to the home page
+      Navigator.of(context).pop(); // Close the current screen
+      });
   }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(

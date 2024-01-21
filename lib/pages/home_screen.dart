@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet/app.dart';
+import 'package:pet/controller/data_controller.dart';
 import 'package:pet/pages/pet_details.dart';
 import 'package:pet/pages/pet_add.dart';
 
 import '../components/colors.dart';
-import '../configuration/configuration.dart'; // Import your pet_add page
+import '../configuration/configuration.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // ... (other imports)
 
@@ -20,6 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   double scaleFactor = 1;
 
   bool isDrawerOpen = false;
+var controller = Get.put(DataController());
+
+@override
+  void initState() {
+    super.initState();
+    controller.fetchPetDataFromFirestore();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,35 +169,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: categories.length,
                                 itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                            boxShadow: shadowList,
+                                  return InkWell(
+                                    onTap: (){
+                                      controller.fetchPetDataFromFirestore();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                              boxShadow: shadowList,
+                                            ),
+                                            child: Image(
+                                              image: AssetImage(categories[index]
+                                              ['imagePath']),
+                                              height: 50,
+                                              width: 50,
+                                            ),
                                           ),
-                                          child: Image(
-                                            image: AssetImage(categories[index]
-                                            ['imagePath']),
-                                            height: 50,
-                                            width: 50,
+                                          SizedBox(
+                                            height: 10.0,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Text(
-                                          categories[index]['name'],
-                                          style: TextStyle(
-                                            color: Colors.grey[700],
+                                          Text(
+                                            categories[index]['name'],
+                                            style: TextStyle(
+                                              color: Colors.grey[700],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }),
@@ -195,9 +210,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             height: 20.0,
                           ),
+
+                          Obx(() =>
                           ListView.builder(
                             physics: ScrollPhysics(),
-                            itemCount: catMapList.length,
+                            itemCount: controller.petDataList.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context,index){
@@ -218,16 +235,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: (index % 2 == 0) ? Colors.blueGrey[200] : Colors.orangeAccent[200] ,
                                                 borderRadius: BorderRadius.circular(20),
                                                 boxShadow: shadowList,
+                                                image: DecorationImage(image: NetworkImage(controller.petDataList[index].imageLink.toString()),fit: BoxFit.cover)
                                               ),
                                               margin: EdgeInsets.only(top: 40),
+
+
                                             ),
-                                            Align(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Hero(
-                                                      tag: 'pet${catMapList[index]['id']}',
-                                                      child: Image.asset(catMapList[index]['imagePath'])),
-                                                )),
+
                                           ],
                                         ),
                                       ),
@@ -252,31 +266,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    catMapList[index]['name'],
+                                                    controller.petDataList[index].name.toString(),
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 21.0,
                                                       color: Colors.grey[600],
                                                     ),
                                                   ),
-                                                  (catMapList[index]['sex'] == 'male') ? Icon(
-                                                    Icons.male_rounded,
-                                                    color: Colors.grey[500],
-                                                  ) : Icon(
+                                                  // (catMapList[index]['sex'] == 'male') ? Icon(
+                                                  //   Icons.male_rounded,
+                                                  //   color: Colors.grey[500],
+                                                  // ) :
+                                                  Icon(
                                                     Icons.female_rounded,
                                                     color: Colors.grey[500],
                                                   ),
                                                 ],
                                               ),
                                               Text(
-                                                catMapList[index]['Species'],
+                                                controller.petDataList[index].price.toString(),
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.grey[500],
                                                 ),
                                               ),
                                               Text(
-                                                catMapList[index]['year']+' years old',
+                                                controller.petDataList[index].age+' years old',
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.grey[400],
@@ -285,6 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 crossAxisAlignment: CrossAxisAlignment.center,
+
                                                 children: [
                                                   Icon(
                                                     Icons.location_on,
@@ -294,13 +310,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   SizedBox(
                                                     width: 3,
                                                   ),
-                                                  Text(
-                                                    'Distance: '+catMapList[index]['distance'],
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.grey[400],
-                                                    ),
-                                                  ),
+                                                  // Text(
+                                                  //   'Distance: '+catMapList[index]['distance'],
+                                                  //   style: TextStyle(
+                                                  //     fontWeight: FontWeight.bold,
+                                                  //     color: Colors.grey[400],
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               )
                                             ],
@@ -312,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               );
                             },
-                          ),
+                          )),
                         ],
                       ),
                     ),
@@ -332,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(
                     builder: (context) => Pet_Add(title: 'Add Pet'), // Use your PetAdd widget
                   ),
-                );
+                ).then((value) => controller.fetchPetDataFromFirestore());
               },
               child: Icon(Icons.add),
             ),
