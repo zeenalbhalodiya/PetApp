@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet/app.dart';
 import 'package:pet/controller/data_controller.dart';
 import 'package:pet/pages/pet_details.dart';
 import 'package:pet/pages/pet_add.dart';
-
 import '../components/colors.dart';
 import '../configuration/configuration.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
-// ... (other imports)
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -110,7 +104,7 @@ var controller = Get.put(DataController());
                             margin: EdgeInsets.only(right: 10.0),
                             child: CircleAvatar(
                               backgroundImage:
-                              AssetImage('images/pet_cat1.png'),
+                              AssetImage('images/pet_cat.png'),
                             ),
                           ),
                         ],
@@ -182,7 +176,7 @@ var controller = Get.put(DataController());
                                             decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius:
-                                              BorderRadius.circular(10),
+                                              BorderRadius.circular(20),
                                               boxShadow: shadowList,
                                             ),
                                             child: Image(
@@ -190,6 +184,7 @@ var controller = Get.put(DataController());
                                               ['imagePath']),
                                               height: 50,
                                               width: 50,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                           SizedBox(
@@ -208,7 +203,7 @@ var controller = Get.put(DataController());
                                 }),
                           ),
                           SizedBox(
-                            height: 20.0,
+                            height: 2.0,
                           ),
 
                           Obx(() =>
@@ -233,15 +228,12 @@ var controller = Get.put(DataController());
                                             Container(
                                               decoration: BoxDecoration(
                                                 color: (index % 2 == 0) ? Colors.blueGrey[200] : Colors.orangeAccent[200] ,
-                                                borderRadius: BorderRadius.circular(20),
+                                                borderRadius: BorderRadius.circular(30),
                                                 boxShadow: shadowList,
                                                 image: DecorationImage(image: NetworkImage(controller.petDataList[index].imageLink.toString()),fit: BoxFit.cover)
                                               ),
                                               margin: EdgeInsets.only(top: 40),
-
-
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -252,7 +244,7 @@ var controller = Get.put(DataController());
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(20),
+                                                topRight: Radius.circular(50),
                                                 bottomRight: Radius.circular(20)),
                                             boxShadow: shadowList,
                                           ),

@@ -8,15 +8,14 @@ import 'package:pet/controller/authController.dart';
 import 'package:pet/pages/create_account_screen.dart';
 import 'package:pet/widget/auth_title_widget.dart';
 import 'package:pet/widget/text_widgets/input_text_field_widget.dart';
-
 import '../components/colors.dart';
 import '../components/common_methos.dart';
 import '../components/static_decoration.dart';
 import '../widget/shadow_container_widget.dart';
+import 'forgot_password.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -60,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // validator: CommonMethod().passwordValidator,
                     hintText: "Password",
                   ),
-                  customHeight(50),
+                  customHeight(40),
                   // appButton("Forgot password?", onTap: () {
                   //   Get.to(() => const ForgetPasswordScreen());
                   // }),
@@ -82,6 +81,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     title: "Log in",
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return forgot_password();
+                            },),);
+                  },
+                          child: Text(
+                              'Forgot Password ?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   customHeight(25),
                   const OrWidget(),

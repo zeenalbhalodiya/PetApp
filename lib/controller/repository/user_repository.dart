@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pet/components/colors.dart';
 import 'package:pet/controller/model/users_model.dart';
 import 'package:pet/controller/repository/user_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Userrepository extends GetxController {
   static Userrepository get instance => Get.find();
@@ -29,4 +30,5 @@ class Userrepository extends GetxController {
       print(error.toString());
     });
   }
+
 }

@@ -1,11 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:pet/components/global_singlton.dart';
 import 'package:pet/controller/model/users_model.dart';
-import 'package:pet/utils/repository/network_repository.dart';
-
 import '../components/colors.dart';
 import '../components/common_methos.dart';
 import '../pages/home_screen.dart';
@@ -19,6 +17,40 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final userRepo = Get.put(UserRepository());
+
+  Future<void> updatePasswordInFirestore(String email, String newPassword) async {
+    try {
+      // Get the reference to the user document in Firestore
+      var userDoc = FirebaseFirestore.instance.collection('users').doc(email);
+
+      // Update the password field in Firestore
+      await userDoc.update({'password': newPassword});
+
+      print('Password updated in Firestore for $email');
+    } catch (e) {
+      print('Error updating password in Firestore: $e');
+    }
+  }
+
+  Future<void> passwordReset(String email) async {
+    try {
+      // Reset password using Firebase Authentication
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      // Call the function to update the password in Firestore
+      await updatePasswordInFirestore(email, 'new_password');
+
+      // Show success dialog or navigate to appropriate screen
+      // ...
+
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase Authentication exceptions
+      print(e);
+
+      // Show error dialog or handle the error as needed
+      // ...
+    }
+  }
 
   Future clearForm() async {
     emailController.clear();
