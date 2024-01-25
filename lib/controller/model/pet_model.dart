@@ -5,6 +5,8 @@ class Pet {
   final String? price;
   final dynamic age;
   final String? imageLink;
+  final String? category;
+  final String? description;
 
   Pet({
     required this.id,
@@ -12,6 +14,8 @@ class Pet {
     required this.price,
     required this.age,
     required this.imageLink,
+    required this.category,
+    required this.description,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) {
@@ -21,6 +25,8 @@ class Pet {
       price: json['price'],
       age: json['age'],
       imageLink: json['imageLink'],
+      category: json['category'],
+      description: json['description'],
     );
   }
 
@@ -30,6 +36,8 @@ class Pet {
       'price': price,
       'age': age,
       'imageLink': imageLink,
+      'category': category,
+      'description': description,
     };
   }
 }

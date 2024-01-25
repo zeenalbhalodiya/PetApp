@@ -201,53 +201,14 @@ class AuthController extends GetxController {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
+      Get.offAll(()=>LoginScreen());
     } catch (e) {
       CommonMethod().getXSnackBar("Error", 'Error signing out: $e', red);
     }
   }
+  // Check if the user is currently signed in
+  Future<bool> isUserSignedIn() async {
+    return _auth.currentUser != null;
+  }
 
-  void loginUser(BuildContext context, GlobalKey<FormState> formKey) {}
 }
-  loginUser(context, formKey) async {
-    // if (formKey.currentState?.validate()) {
-    //   final authUserData = {
-    //     "email": emailController.text.trim(),
-    //     "password": passwordController.text.trim(),
-    //     "deviceToken": GlobalSingleton().deviceToken.toString()
-    //   };
-    //   final authResponse =
-    //       await networkRepository.userLogin(context, authUserData);
-    //   print("ag--- $authResponse");
-    //   checkLoginData(authResponse, context);
-    // }
-  }
-
-  loginWithGoogle(context) {
-    // final GoogleSignIn _googleSignIn = GoogleSignIn(
-    //   scopes: <String>[
-    //     'email',
-    //   ],
-    // );
-    // _googleSignIn.disconnect();
-    // try {
-    //   _googleSignIn.signIn().then((GoogleSignInAccount? acc) async {
-    //     acc!.authentication.then((GoogleSignInAuthentication? auth) async {
-    //       final authUserData = {
-    //         "idToken": auth!.idToken.toString(),
-    //         "accessToken": auth.accessToken.toString(),
-    //         "deviceToken": GlobalSingleton().deviceToken
-    //       };
-    //       print('id token -' + auth.idToken.toString());
-    //       print('access token -' + auth.accssToken.toString());
-
-    //       print(authUserData);
-    //       final authResponse =
-    //           (await networkRepository.googleLogin(context, authUserData));
-
-    //       checkLoginData(authResponse, context);
-    //     });
-    //   });
-    // } catch (e) {
-    //   print(e);
-    // }
-  }

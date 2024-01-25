@@ -43,6 +43,8 @@ class _PetAddState extends State<Pet_Add> {
   TextEditingController priceController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   String? selectedAge;
+  String? selectedCategory;
+  String? description;
 
   List<String> ageList = [
     '1',
@@ -85,9 +87,15 @@ class _PetAddState extends State<Pet_Add> {
       String price = priceController.text;
 
       String resp = await StoreData().saveData(
-          name: name, age: age, price: price, file: _image!);
+          name: name,
+          age: age,
+          price: price,
+          category: selectedCategory ?? '',
+          description: description ?? '',
+          file: _image!
+      );
       await Future.delayed(Duration(seconds: 2));
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
 
       setState(() {
         isLoading = false;
@@ -162,6 +170,38 @@ class _PetAddState extends State<Pet_Add> {
                   decoration: InputDecoration(labelText: 'Age'),
                 ),
               ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                 value: selectedCategory,
+                  onChanged: (String? value) {
+                  setState(() {
+                  selectedCategory = value;
+                   });
+                  },
+                  items: ['Cat', 'Dog']
+                      .map((category) => DropdownMenuItem<String>(
+                    value: category,
+                    child: Text(category),
+                  ))
+                      .toList(),
+                  decoration: InputDecoration(labelText: 'Category'),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      description = value;
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Description'),
+                ),
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(

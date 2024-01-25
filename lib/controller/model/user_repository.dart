@@ -1,10 +1,7 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:hungry/models/user_model.dart';
-//import 'package:hungry/util/colors.dart';
 import 'package:pet/controller/model/users_model.dart';
 
 class UserRepository extends GetxController {

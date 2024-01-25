@@ -22,7 +22,7 @@ class StoreData{
   }
 
   Future<String> saveData(
-      {required String name, required String age, required String price, required Uint8List file,}) async {
+      {required String name, required String age, required String price, required String category, required String description, required Uint8List file }) async {
     String resp = "Some Error Occurred";
     try{
       int ageValue = int.parse(age);
@@ -34,6 +34,8 @@ class StoreData{
           'name': name,
           'age': age,
           'price': price,
+          'category': category,
+          'description': description,
           'imageLink': imageUrl,
         });
         resp = 'success';

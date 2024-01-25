@@ -9,9 +9,11 @@ import 'package:pet/components/app_asset.dart';
 import 'package:pet/components/app_text_style.dart';
 import 'package:pet/components/colors.dart';
 import 'package:pet/components/static_decoration.dart';
+import 'package:pet/pages/main_home_page.dart';
 import 'package:pet/utils/app_constants.dart';
 import 'package:pet/utils/network_dio/network_dio.dart';
 
+import '../controller/authController.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,24 +27,31 @@ String uid = dataStorage.read('userid');
 
 class _SplashScreenState extends State<SplashScreen> {
   static final dataStorage = GetStorage();
-
+  var controller = Get.put(AuthController());
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       startTime();
     });
   }
 
   startTime() async {
-    return Timer(
-      const Duration(milliseconds: 1500),
-      () {
-        Get.offAll(
-          () => const LoginScreen(),
-        );
-      },
-    );
+    Timer(Duration(seconds: 3), () async {
+      // Replace 'HomeScreen()' with the screen you want to navigate to
+
+      var isLogin = await controller.isUserSignedIn();
+      if (isLogin) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ));
+      } else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ));
+      }
+    });
   }
 
   @override

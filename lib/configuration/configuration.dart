@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Color primaryColor = Color(0xff376565);
 
@@ -51,4 +52,31 @@ List<Map> navList = [
   {'icon': Icons.favorite_rounded,'title': 'Favorites'},
   {'icon': Icons.mail_rounded,'title': 'Messages'},
   {'icon': Icons.person,'title': 'Profile'},
+];
+
+List<Map> drawerItems = [
+  {
+    'icon': FontAwesomeIcons.paw,
+    'title': 'Adoption'
+  },
+  {
+    'icon': FontAwesomeIcons.plus,
+    'title':'Add Pet'
+  },
+  {
+    'icon': Icons.favorite,
+    'title':'Favourite'
+  },
+  {
+    'icon': FontAwesomeIcons.userAlt,
+    'title':'Contact Us'
+  },
+  // {
+  //   'icon': FontAwesomeIcons.plus,
+  //   'title':'Offers'
+  // },
+  {
+    'icon': FontAwesomeIcons.signOutAlt,
+    'title':'Logout'
+    },
 ];

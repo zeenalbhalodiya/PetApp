@@ -14,9 +14,7 @@ class PetDetails extends StatefulWidget {
 
 class _PetDetailsState extends State<PetDetails> {
   bool isFavorite = false;
-
   get shadowList => null;
-
   String? get details => null;
 
   @override
