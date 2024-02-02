@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pet/controller/data_controller.dart';
 import 'package:pet/pages/pet_descreption.dart';
 import 'package:pet/pages/pet_add.dart';
+import 'package:pet/widget/text_widgets/input_text_field_widget.dart';
 import '../components/colors.dart';
 import '../configuration/configuration.dart';
 
