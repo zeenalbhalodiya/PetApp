@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet/controller/data_controller.dart';
 import 'package:pet/pages/pet_descreption.dart';
-import 'package:pet/pages/pet_details.dart';
 import 'package:pet/pages/pet_add.dart';
 import '../components/colors.dart';
 import '../configuration/configuration.dart';
@@ -18,10 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   double scaleFactor = 1;
 
   bool isDrawerOpen = false;
-var controller = Get.put(DataController());
+  var controller = Get.put(DataController());
   String? selectedCategory;
 
-@override
+  @override
   void initState() {
     super.initState();
     controller.fetchPetDataFromFirestore();
@@ -29,14 +28,14 @@ var controller = Get.put(DataController());
 
   @override
   Widget build(BuildContext context) {
-    return    Stack(
+    return Stack(
       children: [
         AnimatedContainer(
           decoration: isDrawerOpen
               ? BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-          )
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                )
               : BoxDecoration(color: Colors.white),
           transform: Matrix4.translationValues(xOffset, yOffset, 0)
             ..scale(scaleFactor),
@@ -55,27 +54,27 @@ var controller = Get.put(DataController());
                       children: [
                         isDrawerOpen
                             ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              xOffset = 0;
-                              yOffset = 0;
-                              scaleFactor = 1;
-                              isDrawerOpen = false;
-                            });
-                          },
-                          icon: Icon(Icons.arrow_back_ios),
-                        )
+                                onPressed: () {
+                                  setState(() {
+                                    xOffset = 0;
+                                    yOffset = 0;
+                                    scaleFactor = 1;
+                                    isDrawerOpen = false;
+                                  });
+                                },
+                                icon: Icon(Icons.arrow_back_ios),
+                              )
                             : IconButton(
-                          onPressed: () {
-                            setState(() {
-                              xOffset = 230;
-                              yOffset = 150;
-                              scaleFactor = 0.6;
-                              isDrawerOpen = true;
-                            });
-                          },
-                          icon: Icon(Icons.menu),
-                        ),
+                                onPressed: () {
+                                  setState(() {
+                                    xOffset = 230;
+                                    yOffset = 150;
+                                    scaleFactor = 0.6;
+                                    isDrawerOpen = true;
+                                  });
+                                },
+                                icon: Icon(Icons.menu),
+                              ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -91,12 +90,12 @@ var controller = Get.put(DataController());
                                   ),
                                 ),
                                 Text(
-                                  'Kyiv, ',
+                                  'Pet App, ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text('Ukraine'),
+                                Text(''),
                               ],
                             )
                           ],
@@ -104,8 +103,7 @@ var controller = Get.put(DataController());
                         Container(
                           margin: EdgeInsets.only(right: 10.0),
                           child: CircleAvatar(
-                            backgroundImage:
-                            AssetImage('images/pet_cat.png'),
+                            backgroundImage: AssetImage('images/pet_cat.png'),
                           ),
                         ),
                       ],
@@ -132,7 +130,7 @@ var controller = Get.put(DataController());
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Colors.transparent),
+                                    BorderSide(color: Colors.transparent),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -156,74 +154,92 @@ var controller = Get.put(DataController());
                           ),
                         ),
                         SizedBox(
-                          height: 30.0,
+                          height: 20.0,
                         ),
-                        Container(
-                          height: 120,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: categories.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: (){
 
-                                    controller.fetchPetDataFromFirestore();
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                            BorderRadius.circular(20),
-                                            boxShadow: shadowList,
-                                          ),
-                                          child: Image(
-                                            image: AssetImage(categories[index]
-                                            ['imagePath']),
-                                            height: 50,
-                                            width: 50,
-                                            fit: BoxFit.cover,
-                                          ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: categories.map((e) {
+                              var index = categories.indexOf(e);
+                              return InkWell(
+                                onTap: () {
+                                  controller.fetchPetDataFromFirestore();
+                                  controller.selectedCategoryName.value = e['name'];
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Column(
+                                    children: [
+                                      Obx(() => Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                  color: controller
+                                                              .selectedCategoryName
+                                                              .value ==
+                                                          e['name']
+                                                      ? success
+                                                      : Colors.transparent,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: shadowList,
+                                            ),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  categories[index]
+                                                      ['imagePath']),
+                                              height: 50,
+                                              width: 50,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Text(
+                                        categories[index]['name'],
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
                                         ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Text(
-                                          categories[index]['name'],
-                                          style: TextStyle(
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              }),
-                        ),
-                        SizedBox(
-                          height: 2.0,
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
 
-                        Obx(() =>
-                            ListView.builder(
+                        // SizedBox(
+                        //   height: 2.0,
+                        // ),
+
+                        Obx(() => ListView.builder(
                               physics: ScrollPhysics(),
                               itemCount: controller.petDataList.length,
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              itemBuilder: (context,index){
-
+                              itemBuilder: (context, index) {
                                 //database
                                 return GestureDetector(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DescriptionScreen(pet: controller.petDataList[index],)));
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DescriptionScreen(
+                                                  pet: controller
+                                                      .petDataList[index],
+                                                )));
                                   },
                                   child: Container(
                                     height: 230,
-                                    margin: EdgeInsets.symmetric(horizontal: 20),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -231,41 +247,61 @@ var controller = Get.put(DataController());
                                             children: [
                                               Container(
                                                 decoration: BoxDecoration(
-                                                    color: (index % 2 == 0) ? Colors.blueGrey[200] : Colors.orangeAccent[200] ,
-                                                    borderRadius: BorderRadius.circular(30),
-                                                    boxShadow: shadowList,
-                                                    //database
-                                                    image: DecorationImage(image: NetworkImage(controller.petDataList[index].imageLink.toString()),fit: BoxFit.cover)
+                                                  color: (index % 2 == 0)
+                                                      ? Colors.blueGrey[200]
+                                                      : Colors
+                                                          .orangeAccent[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  boxShadow: shadowList,
+                                                  //database
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        controller
+                                                            .petDataList[index]
+                                                            .imageLink
+                                                            .toString()),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                                margin: EdgeInsets.only(top: 40),
+                                                margin:
+                                                    EdgeInsets.only(top: 40),
                                               ),
                                             ],
                                           ),
                                         ),
                                         Expanded(
                                           child: Container(
-                                            margin: EdgeInsets.only(top: 65, bottom: 20),
+                                            margin: EdgeInsets.only(
+                                                top: 65, bottom: 20),
                                             padding: EdgeInsets.all(15),
                                             decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(50),
-                                                  bottomRight: Radius.circular(20)),
+                                                  bottomRight:
+                                                      Radius.circular(20)),
                                               boxShadow: shadowList,
                                             ),
                                             child: Column(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                  MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      controller.petDataList[index].name.toString(),
+                                                      controller
+                                                          .petDataList[index]
+                                                          .name
+                                                          .toString(),
                                                       style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         fontSize: 21.0,
                                                         color: Colors.grey[600],
                                                       ),
@@ -281,29 +317,34 @@ var controller = Get.put(DataController());
                                                   ],
                                                 ),
                                                 Text(
-                                                  controller.petDataList[index].price.toString(),
+                                                  controller
+                                                      .petDataList[index].price
+                                                      .toString(),
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.grey[500],
                                                   ),
                                                 ),
                                                 Text(
-                                                  controller.petDataList[index].age+' years old',
+                                                  controller.petDataList[index]
+                                                          .age +
+                                                      ' years old',
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: Colors.grey[400],
                                                   ),
                                                 ),
                                                 Row(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
-                                                    Icon(
-                                                      Icons.location_on,
-                                                      color: appColor,
-                                                      size: 18,
-                                                    ),
+                                                    // Icon(
+                                                    //   Icons.location_on,
+                                                    //   color: appColor,
+                                                    //   size: 18,
+                                                    // ),
                                                     SizedBox(
                                                       width: 3,
                                                     ),
@@ -326,6 +367,9 @@ var controller = Get.put(DataController());
                                 );
                               },
                             )),
+                        SizedBox(
+                          height: 70,
+                        ),
                       ],
                     ),
                   ),
@@ -338,12 +382,21 @@ var controller = Get.put(DataController());
           bottom: 20.0,
           right: 20.0,
           child: FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
               // Navigate to the 'pet_add' page
+              var result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PetAdd(),
+                ),
+              );
+              if (result != null && result) {
+                controller.fetchPetDataFromFirestore();
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Pet_Add(title: 'Add Pet'), // Use your PetAdd widget
+                  builder: (context) => PetAdd(),
                 ),
               ).then((value) => controller.fetchPetDataFromFirestore());
             },

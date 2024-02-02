@@ -34,117 +34,117 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Form(
-        key: _formKey,
-        child: Scaffold(
-          appBar: UiInterface.commonAppBar(leadingWidget: const SizedBox()),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  height15,
-                  const AuthTitleWidget(
-                    title: "Login to your Account",
-                  ),
-                  customHeight(40),
-                  EmailWidget(
-                    controller: controller.emailController,
-                    hintText: "Email",
-                  ),
-                  height16,
-                  PasswordWidget(
-                    controller: controller.passwordController,
-                    // validator: CommonMethod().passwordValidator,
-                    hintText: "Password",
-                  ),
-                  customHeight(40),
-                  // appButton("Forgot password?", onTap: () {
-                  //   Get.to(() => const ForgetPasswordScreen());
-                  // }),
-                  customHeight(30),
-                  PrimaryTextButton(
-                    onPressed: () {
-                      if (controller.emailController.text.isEmpty) {
-                        CommonMethod()
-                            .getXSnackBar('Error', 'Please enter email', red);
-                      } else if (!emailRegex
-                          .hasMatch(controller.emailController.text)) {
-                        CommonMethod().getXSnackBar(
-                            'Error', 'Please enter valid email', red);
-                      } else if (controller.passwordController.text.isEmpty) {
-                        CommonMethod().getXSnackBar(
-                            'Error', 'Please enter password', red);
-                      } else {
-                        controller.signInWithEmailAndPassword(context);
-                      }
-                    },
-                    title: "Log in",
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return forgot_password();
-                            },),);
-                  },
-                          child: Text(
-                              'Forgot Password ?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  customHeight(25),
-                  const OrWidget(),
-                  customHeight(25),
-
-                  ShadowContainerWidget(
-                      padding: 0,
-                      widget: SizedBox(
-                        height: 50,
+        child: Form(
+            key: _formKey,
+            child: Scaffold(
+              appBar: UiInterface.commonAppBar(leadingWidget: const SizedBox()),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      height15,
+                      const AuthTitleWidget(
+                        title: "Login to your Account",
+                      ),
+                      customHeight(40),
+                      EmailWidget(
+                        controller: controller.emailController,
+                        hintText: "Email",
+                      ),
+                      height16,
+                      PasswordWidget(
+                        controller: controller.passwordController,
+                        // validator: CommonMethod().passwordValidator,
+                        hintText: "Password",
+                      ),
+                      customHeight(40),
+                      // appButton("Forgot password?", onTap: () {
+                      //   Get.to(() => const ForgetPasswordScreen());
+                      // }),
+                      customHeight(30),
+                      PrimaryTextButton(
+                        onPressed: () {
+                          if (controller.emailController.text.isEmpty) {
+                            CommonMethod()
+                                .getXSnackBar('Error', 'Please enter email', red);
+                          } else if (!emailRegex
+                              .hasMatch(controller.emailController.text)) {
+                            CommonMethod().getXSnackBar(
+                                'Error', 'Please enter valid email', red);
+                          } else if (controller.passwordController.text.isEmpty) {
+                            CommonMethod().getXSnackBar(
+                                'Error', 'Please enter password', red);
+                          } else {
+                            controller.signInWithEmailAndPassword(context);
+                          }
+                        },
+                        title: "Log in",
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: Row(
-                          // mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            SvgPicture.asset(AppAsset.icGoogle),
-                            width10,
-                            Text('Sign In with Google')
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return forgot_password();
+                                },),);
+                              },
+                              child: Text(
+                                'Forgot Password ?',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                      )),
-                  // customHeight(25),
-                  // ImageButton(
-                  //   onPressed: () {
-                  //     controller.loginWithGoogle(context);
-                  //   },
-                  //   buttonName: 'Login With Google',
-                  //   imageLink: AppAsset.icGoogle,
-                  // ),
-                  customHeight(30),
-                  AuthDontHaveAccountWidget(
-                    buttonText: "Sign up",
-                    title: "Don't have an account?",
-                    onTap: () {
-                      Get.to(() => const CreateAccountScreen());
-                    },
-                  )
-                ],
+                      ),
+                      customHeight(25),
+                      const OrWidget(),
+                      customHeight(25),
+
+                      ShadowContainerWidget(
+                          padding: 0,
+                          widget: SizedBox(
+                            height: 50,
+                            child: Row(
+                              // mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppAsset.icGoogle),
+                                width10,
+                                Text('Sign In with Google')
+                              ],
+                            ),
+                          )),
+                      // customHeight(25),
+                      // ImageButton(
+                      //   onPressed: () {
+                      //     controller.loginWithGoogle(context);
+                      //   },
+                      //   buttonName: 'Login With Google',
+                      //   imageLink: AppAsset.icGoogle,
+                      // ),
+                      customHeight(30),
+                      AuthDontHaveAccountWidget(
+                        buttonText: "Sign up",
+                        title: "Don't have an account?",
+                        onTap: () {
+                          Get.to(() => const CreateAccountScreen());
+                        },
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
+            ),
+        );
+    }
 }

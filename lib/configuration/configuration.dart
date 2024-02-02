@@ -12,8 +12,9 @@ String details = 'My job requires moving to another country.'
     'I am looking for good people who will shelter my pet';
 
 List<Map> categories = [
-  {"name": 'Cats',"imagePath":'assets/images/png/cat.jpeg'},
-  {"name": 'Dogs',"imagePath":'assets/images/png/dog.jpeg'},
+  {"name": 'All',"imagePath":'assets/images/png/cat.jpeg'},
+  {"name": 'Cat',"imagePath":'assets/images/png/cat.jpeg'},
+  {"name": 'Dog',"imagePath":'assets/images/png/dog.jpeg'},
   // {"name": 'Horses',"imagePath":'images/horse.png'},
   // {"name": 'Parrots',"imagePath":'images/parrot.png'},
   // {"name": 'Rabbits',"imagePath":'images/rabbit.png'},

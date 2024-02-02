@@ -6,8 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet/controller/model/users_model.dart';
 import '../components/colors.dart';
 import '../components/common_methos.dart';
-import '../pages/home_screen.dart';
 import '../pages/login_screen.dart';
+import '../pages/main_home_page.dart';
 import 'model/user_repository.dart';
 
 class AuthController extends GetxController {
@@ -82,8 +82,8 @@ class AuthController extends GetxController {
           Colors.green,
         )
             .then((value) => Get.to(() => LoginScreen())
-      );
-    }
+        );
+      }
       // Send email verification
       await userCredential.user!
           .sendEmailVerification()
@@ -120,7 +120,7 @@ class AuthController extends GetxController {
   Future saveUserDetails(userModel user) async {
     userRepo.createUser(user);
     // controller.registerWithEmailAndPassword(context);
-    }
+  }
   // Sign in with email and password
   Future<String?> signInWithEmailAndPassword(BuildContext context) async {
     try {
@@ -132,7 +132,7 @@ class AuthController extends GetxController {
         // User is signed in and email is verified
         await CommonMethod()
             .getXSnackBar("Success", 'Sign-in successfully', success)
-            .whenComplete(() => Get.to(() => HomeScreen()));
+            .whenComplete(() => Get.to(() => HomePage()));
       } else {
         // Email is not verified, handle accordingly
         await CommonMethod().getXSnackBar(
@@ -176,7 +176,7 @@ class AuthController extends GetxController {
         // Successfully signed in with Google
         await CommonMethod()
             .getXSnackBar("Success", 'Signed in: ${user.displayName}', success)
-            .whenComplete(() => Get.to(() => HomeScreen()));
+            .whenComplete(() => Get.to(() => HomePage()));
       }
 
       return user;
@@ -208,7 +208,7 @@ class AuthController extends GetxController {
   }
   // Check if the user is currently signed in
   Future<bool> isUserSignedIn() async {
-    return _auth.currentUser != null;
-  }
+    return _auth.currentUser!=null;
+    }
 
 }
