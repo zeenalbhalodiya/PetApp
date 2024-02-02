@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -10,9 +9,6 @@ import 'package:pet/components/app_text_style.dart';
 import 'package:pet/components/colors.dart';
 import 'package:pet/components/static_decoration.dart';
 import 'package:pet/pages/main_home_page.dart';
-import 'package:pet/utils/app_constants.dart';
-import 'package:pet/utils/network_dio/network_dio.dart';
-
 import '../controller/authController.dart';
 import 'login_screen.dart';
 
@@ -36,7 +32,6 @@ class _SplashScreenState extends State<SplashScreen> {
       startTime();
     });
   }
-
   startTime() async {
     Timer(Duration(seconds: 3), () async {
       // Replace 'HomeScreen()' with the screen you want to navigate to

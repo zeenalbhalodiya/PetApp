@@ -9,7 +9,6 @@ import 'package:pet/pages/login_screen.dart';
 import 'package:pet/widget/auth_title_widget.dart';
 import 'package:pet/widget/shadow_container_widget.dart';
 import 'package:pet/widget/text_widgets/input_text_field_widget.dart';
-
 import '../components/colors.dart';
 import '../components/common_methos.dart';
 import '../components/static_decoration.dart';
@@ -31,7 +30,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     super.initState();
     // dataStorage.write("isOnBoarded", true);
   }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -50,6 +48,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     title: "Create your Account",
                   ),
                   customHeight(40),
+                  height16,
                   EmailWidget(
                     controller: controller.emailController,
                     hintText: "Email",
@@ -73,6 +72,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   customHeight(30),
                   PrimaryTextButton(
                     onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        controller.registerWithEmailAndPassword(context);
+                      }
                       if (controller.emailController.text.isEmpty) {
                         CommonMethod()
                             .getXSnackBar('Error', 'Please enter email', red);

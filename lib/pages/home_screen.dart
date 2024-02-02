@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet/controller/data_controller.dart';
 import 'package:pet/pages/pet_descreption.dart';
-import 'package:pet/pages/pet_details.dart';
 import 'package:pet/pages/pet_add.dart';
 import '../components/colors.dart';
 import '../configuration/configuration.dart';
@@ -215,11 +214,13 @@ var controller = Get.put(DataController());
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               itemBuilder: (context,index){
-
                                 //database
                                 return GestureDetector(
                                   onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DescriptionScreen(pet: controller.petDataList[index],)));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => pet_descreption(pet: controller.petDataList[index],
+                                    ),
+                                    ),
+                                    );
                                   },
                                   child: Container(
                                     height: 230,
@@ -235,7 +236,7 @@ var controller = Get.put(DataController());
                                                     borderRadius: BorderRadius.circular(30),
                                                     boxShadow: shadowList,
                                                     //database
-                                                    image: DecorationImage(image: NetworkImage(controller.petDataList[index].imageLink.toString()),fit: BoxFit.cover)
+                                                    image: DecorationImage(image: NetworkImage(controller.petDataList[index].imageLink.toString()),fit: BoxFit.cover),
                                                 ),
                                                 margin: EdgeInsets.only(top: 40),
                                               ),
@@ -251,7 +252,7 @@ var controller = Get.put(DataController());
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(50),
                                                   bottomRight: Radius.circular(20)),
-                                              boxShadow: shadowList,
+                                                  boxShadow: shadowList,
                                             ),
                                             child: Column(
                                               mainAxisAlignment:
@@ -297,13 +298,23 @@ var controller = Get.put(DataController());
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   crossAxisAlignment: CrossAxisAlignment.center,
-
                                                   children: [
-                                                    Icon(
-                                                      Icons.location_on,
-                                                      color: appColor,
-                                                      size: 18,
-                                                    ),
+                                                    // if (controller.isPetFavorite(
+                                                    //     controller.petDataList[index].id!))
+                                                     InkWell(
+                                                         onTap: () {
+                                                           controller.toggleFavoriteStatus(
+                                                           controller.petDataList[index].id!);
+                                                         },
+                                                       child: Icon (
+                                                          controller.isPetFavorite(
+                                                          controller.petDataList[index].id!)
+                                                          ? Icons.favorite
+                                                              : Icons.favorite_border,
+                                                          color: Colors.redAccent,
+                                                          size: 30,
+                                                       ),
+                                                   ),
                                                     SizedBox(
                                                       width: 3,
                                                     ),

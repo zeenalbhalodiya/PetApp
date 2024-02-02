@@ -18,6 +18,8 @@ class AuthController extends GetxController {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final userRepo = Get.put(UserRepository());
 
+  get nameController => null;
+
   Future<void> updatePasswordInFirestore(String email, String newPassword) async {
     try {
       // Get the reference to the user document in Firestore
@@ -53,6 +55,7 @@ class AuthController extends GetxController {
   }
 
   Future clearForm() async {
+    nameController.clear();
     emailController.clear();
     passwordController.clear();
     passwordController.clear();
@@ -71,7 +74,6 @@ class AuthController extends GetxController {
         await userCredential.user!
             .sendEmailVerification()
             .whenComplete(() async =>
-
             saveUserDetails(userModel(id: user.uid.toString(),
                 email:user.email.toString().trim(), password: passwordController.text,
                 confirmpassword: confirmPasswordController.text)));
@@ -86,7 +88,7 @@ class AuthController extends GetxController {
     }
       // Send email verification
       await userCredential.user!
-          .sendEmailVerification()
+          .sendEmailVerification( )
           .whenComplete(() async => await CommonMethod().getXSnackBar(
         "Success",
         'Verification email sent to ${userCredential.user!.email}',

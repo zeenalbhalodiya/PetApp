@@ -1,25 +1,33 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pet/components/app_text_style.dart';
 import 'package:pet/configuration/configuration.dart';
-import 'package:pet/pages/utils.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '../controller/model/pet_model.dart';
 
 class DescriptionScreen extends StatefulWidget{
   //database
-    final Pet pet;
-    DescriptionScreen({required this.pet});
-  @override
+  final Pet pet;
+  DescriptionScreen({required this.pet});
+
+    @override
   State<DescriptionScreen> createState() => _DescriptionScreenState();
 }
 
 class _DescriptionScreenState extends State<DescriptionScreen> {
+  bool isFavorite = false;
+
+  void initState() {
+    super.initState();
+    // Check if the pet is a favorite using the DataController
+    isFavorite = widget.dataController.isPetFavorite(widget.petId);
+  }
 
   @override
   Widget build(BuildContext context) {
+    Pet pet = widget.dataController.petDataList.firstWhere(
+          (pet) => pet.id == widget.petId,
+      orElse: () => Pet(), // Provide a default value or handle not found
+    );
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -30,7 +38,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                     Expanded(
                       child: Container(
                         color: Colors.blueGrey[300],
-                        child:  Image.network(widget.pet.imageLink.toString(),height: 300,width: Get.width,fit: BoxFit.cover,),
+                        child:  Image.network(pet.imageLink.toString(),height: 300,width: Get.width,fit: BoxFit.cover,),
                       ),
                     ),
                     Expanded(
@@ -45,8 +53,8 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(20),
                                       child: Text(
-                                        widget.pet.description.toString(),
-                                        style: AppTextStyle.normalRegular16.copyWith(color: primaryColor),
+                                        pet.description.toString(),
+                                        style: AppTextStyle.normalRegular16.copyWith(color: primaryColor,),
                                       ),
                                     ),
                                   ),
@@ -104,7 +112,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                       MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.pet.name.toString(),
+                          pet.name.toString(),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 32.0,
@@ -118,7 +126,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                       ],
                     ),
                     Text(
-                      widget.pet.age+' years old',
+                      pet.age+' years old',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22.0,
@@ -126,7 +134,7 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                       ),
                     ),
                     Text(
-                      widget.pet.price.toString(),
+                      pet.price.toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 23.0,
@@ -144,7 +152,15 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                 height: 100,
                 child: Row(
                   children: [
-                    Container(
+                    InkWell(
+                    onTap: () {
+                     // Toggle the favorite state
+                    setState(() {
+                    isFavorite = !isFavorite;
+                    widget.dataController.toggleFavoriteStatus(widget.petId as Pet);
+                   });
+                  },
+                   child: Container(
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
@@ -152,9 +168,10 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Icon(
-                        Icons.favorite_border,
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: Colors.white,
                       ),
+                    ),
                     ),
                     SizedBox(width: 10,),
                     Expanded(

@@ -51,7 +51,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
                       children: [
-                        Icon(element['icon'],color: Colors.white,size: 25,),
+                        Icon(element['icon'],color: Colors.white,size: 20,),
                         SizedBox(width: 15,),
                         Text(element['title'],style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20))
                       ],
@@ -66,7 +66,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               children: [
                 Icon(Icons.settings,color: Colors.white),
                 SizedBox(width: 10,height: 20,),
-                Text('Settings',style:TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20),),
+                Text('Settings',style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 20),),
                 SizedBox(width: 10,height: 20,),
                 // Container(width: 2,height: 20,color: Colors.white,),
                 // SizedBox(width: 10,),
