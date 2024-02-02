@@ -22,6 +22,9 @@ class DataController extends  GetxController{
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('catadd').get();
 
+    bool isPetFavorite(String petId) {
+      return favoritePetIds.contains(petId);
+    }
     List<Pet> petList = querySnapshot.docs.map((doc) {
       // Fetch image URL using fetchImageUrl function
       return Pet.fromJson({

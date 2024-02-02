@@ -21,6 +21,10 @@ class _DescriptionScreenState extends State<DescriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Pet pet = widget.dataController.petDataList.firstWhere(
+          (pet) => pet.id == widget.petId,
+      orElse: () => Pet(), // Provide a default value or handle not found
+    );
     return SafeArea(
         child: Scaffold(
             body: Stack(
